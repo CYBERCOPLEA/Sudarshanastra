@@ -6,6 +6,7 @@
     var w = n.parentElement.clientWidth, kids = n.children, used = (parseFloat(getComputedStyle(n).columnGap) || 12) * (kids.length - 1);
     for (var i = 0; i < kids.length; i++) used += kids[i].getBoundingClientRect().width;
     if (getComputedStyle(n).flexWrap === 'nowrap' && used > w) n.style.zoom = Math.max(0.7, (w - 4) / used).toFixed(3);
+    try { if (typeof Polish !== 'undefined' && Polish.fitLine) Polish.fitLine(); } catch (e) { }
   }
   window.addEventListener('resize', fit);
   window.addEventListener('load', fit);

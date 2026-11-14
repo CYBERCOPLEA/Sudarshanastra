@@ -143,3 +143,14 @@ document.addEventListener('click', e => { const a = e.target.closest('[data-cbed
 
 /* For Best View choice is kept on this computer */
 try { Polish.bvApply(); } catch (e) { }
+
+/* Home page: the Police box and the big name end exactly at the right edge of the tagline pill under the top-left brand (Vijay's red line) */
+Polish.fitLine = function () {
+  const ref = document.querySelector('.hp-brand .hp-one'), els = [document.querySelector('.hp-copy .hp-kicker'), document.querySelector('.hp-copy .hp-name')];
+  if (els[0]) els[0].style.zoom = '';
+  if (!ref || innerWidth < 1001 || !ref.getBoundingClientRect().width) return;
+  if (els[1]) els[1].style.zoom = '';
+  const R = ref.getBoundingClientRect().right;
+  els.forEach(e => { if (!e) return; const r = e.getBoundingClientRect(), z = parseFloat(getComputedStyle(e).zoom) || 1; let w = 0; [...e.children].forEach(c => { const q = c.getBoundingClientRect(); if (getComputedStyle(c).position !== 'absolute' && q.width) w = Math.max(w, q.right); }); w = Math.max(w, r.left + 1) - r.left; if (e.classList.contains('hp-kicker')) w = r.width; if (w > 20) e.style.zoom = (z * (R - r.left) / w).toFixed(4); });
+};
+try { Polish.fitLine(); addEventListener('resize', () => Polish.fitLine()); addEventListener('load', () => Polish.fitLine()); if (document.fonts) document.fonts.ready.then(() => Polish.fitLine()); } catch (e) { }
