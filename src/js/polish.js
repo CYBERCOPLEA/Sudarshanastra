@@ -87,6 +87,12 @@ const Polish = {
   /* login page: refresh and For Best View */
   const hr = $('#hpRf'); if (hr) hr.innerHTML = Polish.RFI.replace(/RFG/g, 'RFH').replace(/22"/g, '26"');
   if (hr) hr.onclick = () => location.reload();
+  /* login page: Day / Night theme (Vijay 14-11) – same setting as the theme button inside the tool */
+  const th = $('#hpTh'); if (th) { const SUN = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>', MOON = '<svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" fill="currentColor"/></svg>';
+    const light = () => document.documentElement.dataset.theme === 'light';
+    const ico = () => { th.innerHTML = light() ? MOON : SUN; th.title = light() ? 'Day theme is on – click for Night (dark) theme' : 'Night theme is on – click for Day (light) theme'; };
+    ico(); th.onclick = async () => { try { S.settings.theme = light() ? 'dark' : 'light'; applyTheme(); await DB.set('settings', S.settings); } catch (e) { document.documentElement.dataset.theme = light() ? 'dark' : 'light'; } ico(); };
+    new MutationObserver(ico).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); }
   const bv = $('#hpBv'), bm = $('#bvMenu'); if (bv && bm) { bv.onclick = e => { e.stopPropagation(); if (bm.hidden) Polish.bestView(); bm.hidden = !bm.hidden; bv.classList.toggle('on', !bm.hidden); }; document.addEventListener('click', e => { if (!bm.hidden && !e.target.closest('.bv-wrap')) { bm.hidden = true; bv.classList.remove('on'); } }); }
 
   /* Offline heading on every import window */
